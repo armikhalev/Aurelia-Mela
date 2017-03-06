@@ -1,3 +1,19 @@
 <template>
-    <h1>${message}</h1>
+<div id="koyla_page" class="row">
+
+    <input type="submit" value="Change language" id="changeLanguageBtn" class="button">
+
+    <form>
+        <header id="languageTranslatedFromHeader" class="formHeader">English</header>
+        <input type="text" id="wordToTranslate" value.bind="word"><br>
+
+    </form>
+
+    <input type="submit" value="Submit" id="submitBtn" class="button" click.delegate="submitWord()">
+
+    <header id="languageTranslatedToHeader" class="formHeader">Mela</header>
+
+    <div id="translation" class="translationDiv">${translation}</div>
+
+</div>
 </template>

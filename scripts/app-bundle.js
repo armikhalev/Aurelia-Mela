@@ -27,7 +27,7 @@ define('environment',["require", "exports"], function (require, exports) {
     };
 });
 
-define('main',["require", "exports", "./environment"], function (require, exports, environment_1) {
+define('main',["require", "exports", "./environment", "bootstrap"], function (require, exports, environment_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     Promise.config({
@@ -50,13 +50,39 @@ define('main',["require", "exports", "./environment"], function (require, export
     exports.configure = configure;
 });
 
+define('messages',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var WordUpdated = (function () {
+        function WordUpdated(word) {
+            this.word = word;
+        }
+        return WordUpdated;
+    }());
+    exports.WordUpdated = WordUpdated;
+});
+
 define('koyla/koyla',["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Koyla = (function () {
         function Koyla() {
-            this.message = 'Se ya Koyla!';
+            this.translation = 'translation';
+            this.lang = 'english';
         }
+        ;
+        Koyla.prototype.submitWord = function () {
+            console.log("before /n");
+            $.getJSON("http://0.0.0.0:8000/koyla/" + this.lang + "/" + this.word)
+                .done(function (data) {
+                this.translation = data[0].la;
+                console.log("after done", data[0].la);
+            })
+                .fail(function () {
+                console.log('Oh no, something went wrong!');
+            });
+        };
+        ;
         return Koyla;
     }());
     exports.Koyla = Koyla;
@@ -107,9 +133,10 @@ define('resources/index',["require", "exports"], function (require, exports) {
     exports.configure = configure;
 });
 
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><require from=\"navig-bar/navig-bar\"></require><navig-bar router.bind=\"router\"></navig-bar><div class=\"container\"><div class=\"row\"><router-view class=\"col-md-8\"></router-view></div></div></template>"; });
-define('text!koyla/koyla.html', ['module'], function(module) { module.exports = "<template><h1>${message}</h1></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><require from=\"navig-bar/navig-bar\"></require><navig-bar router.bind=\"router\"></navig-bar><div class=\"container-fluid\"><router-view></router-view></div></template>"; });
+define('text!styles.css', ['module'], function(module) { module.exports = "body {\n  padding-top: 65px; }\n\nh1 {\n  margin-top: 50%;\n  text-align: center; }\n"; });
+define('text!koyla/koyla.css', ['module'], function(module) { module.exports = ""; });
+define('text!koyla/koyla.html', ['module'], function(module) { module.exports = "<template><div id=\"koyla_page\" class=\"row\"><input type=\"submit\" value=\"Change language\" id=\"changeLanguageBtn\" class=\"button\"><form><header id=\"languageTranslatedFromHeader\" class=\"formHeader\">English</header><input type=\"text\" id=\"wordToTranslate\" value.bind=\"word\"><br></form><input type=\"submit\" value=\"Submit\" id=\"submitBtn\" class=\"button\" click.delegate=\"submitWord()\"><header id=\"languageTranslatedToHeader\" class=\"formHeader\">Mela</header><div id=\"translation\" class=\"translationDiv\">${translation}</div></div></template>"; });
 define('text!latay/latay.html', ['module'], function(module) { module.exports = "<template><h1>${message}</h1></template>"; });
 define('text!navig-bar/navig-bar.html', ['module'], function(module) { module.exports = "<template><nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\"><span class=\"sr-only\">Toggle Navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\"><i class=\"fa fa-home\"></i> <span>${router.title}</span></a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1.in\" href.bind=\"row.href\">${row.title}</a></li></ul><ul class=\"nav navbar-nav navbar-right\"><li class=\"loader\" if.bind=\"router.isNavigating\"><i class=\"fa fa-spinner fa-spin fa-2x\"></i></li></ul></div></nav></template>"; });
-define('text!styles.css', ['module'], function(module) { module.exports = "h1 {\n  margin-top: 50%;\n  text-align: center; }\n\nbody {\n  font: 100% Helvetica, sans-serif;\n  color: red; }\n"; });
 //# sourceMappingURL=app-bundle.js.map

@@ -1,13 +1,8 @@
-
-$font-stack:    Helvetica, sans-serif;
-$primary-color: red;
-
+body { 
+    padding-top: 65px; 
+}
+ 
 h1 {
     margin-top: 50%;
     text-align: center;
-}
-
-body {
-  font: 100% $font-stack;
-  color: $primary-color;
 }
