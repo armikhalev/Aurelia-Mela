@@ -1,4 +1,6 @@
 <template>
+<require from="resources/attributes/on-enter"></require>
+
 <div id="koyla_page" class="row">
 
     <input type="submit" value="Change language" id="changeLanguageBtn" class="button">
@@ -9,7 +11,7 @@
 
     </form>
 
-    <input type="submit" value="Submit" id="submitBtn" class="button" click.delegate="submitWord()">
+    <input type="submit" value="Submit" id="submitBtn" class="button" click.delegate="submitWord()" on-enter.call="submitWord()">
 
     <header id="languageTranslatedToHeader" class="formHeader">Mela</header>
 
