@@ -1,3 +1,5 @@
+// Kudos to http://blog.sapiensworks.com/post/2016/01/25/aurelia-submit-on-enter
+
 import {customAttribute, autoinject} from "aurelia-framework";
 
 @autoinject
