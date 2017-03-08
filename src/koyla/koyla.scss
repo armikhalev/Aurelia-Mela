@@ -1,0 +1,14 @@
+.formHeader {
+    margin-top: 24px;
+    color: tan;
+    font-size: 24px;
+
+    &:first-letter {
+        text-transform:capitalize;
+    }
+}
+
+.translationDiv {
+    color: chocolate;
+    font-size: 26px;
+}

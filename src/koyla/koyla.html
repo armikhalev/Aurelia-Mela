@@ -1,20 +1,24 @@
 <template>
 <require from="resources/attributes/on-enter"></require>
+<require from="./koyla.css"></require>
 
-<div id="koyla_page" class="row text-center">
+<div id="koyla_page" class="row text-center col-xs-offset-4 col-xs-4 ">
 
-    <input type="submit" value="Change language" id="changeLanguageBtn" class="button btn btn-primary">
+    <button type="submit" id="changeLanguageBtn" class="btn btn-primary " click.delegate="changeLanguage()">Change language</button>
 
     <form>
-        <header id="languageTranslatedFromHeader" class="formHeader">English</header>
-        <input type="text" id="wordToTranslate" value.bind="word" on-enter.call="submitWord()"><br>
+        <div class="form-group">
+            <label id="languageTranslatedFromHeader" class="formHeader" for="wordToTranslate">${lang}</label>
+            <input  on-enter.call="submitWord()" type="text" placeholder="Type any word to translate" id="wordToTranslate" class="form-control wordToTranslate" value.bind="word"><br>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-success" click.delegate="submitWord()">Submit</button>
     </form>
 
-    <input type="submit" value="Submit" id="submitBtn" class="btn btn-success" click.delegate="submitWord()">
+    <div class="row">
+        <label id="languageTranslatedToHeader" class="formHeader">${langToTranslate}</label>
 
-    <header id="languageTranslatedToHeader" class="formHeader">Mela</header>
-
-    <div id="translation" class="translationDiv">${translation}</div>
-
+        <div id="translation" class="translationDiv well well-lg">${translation}</div>
+    </div>
 </div>
 </template>

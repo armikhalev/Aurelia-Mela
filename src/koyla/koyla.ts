@@ -4,6 +4,7 @@ export class Koyla {
   
   private translation: string = 'translation';
   private lang: string = 'english';
+  private langToTranslate: string = 'mela';
   private word: string;
   private http = new HttpClient();
 
@@ -20,8 +21,17 @@ export class Koyla {
     this.http.fetch(this.lang + "/" + this.word)
         .then(response => response.json())
         .then(data => {
+          if (this.langToTranslate === 'english' ){
+            this.translation = data[0].word;
+          }
+          else {
             this.translation = data[0].la;
-            console.log("after done",data[0].la);
+          }
         });
   };
+
+  private changeLanguage():void {
+      this.lang = this.lang === "english" ? "mela" : "english";
+      this.langToTranslate = this.langToTranslate === "mela" ? "english" : "mela";
+  }
 }

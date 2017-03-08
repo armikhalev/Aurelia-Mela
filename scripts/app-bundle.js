@@ -69,6 +69,7 @@ define('koyla/koyla',["require", "exports", "aurelia-fetch-client"], function (r
         function Koyla() {
             this.translation = 'translation';
             this.lang = 'english';
+            this.langToTranslate = 'mela';
             this.http = new aurelia_fetch_client_1.HttpClient();
             this.http.configure(function (config) {
                 config
@@ -82,11 +83,19 @@ define('koyla/koyla',["require", "exports", "aurelia-fetch-client"], function (r
             this.http.fetch(this.lang + "/" + this.word)
                 .then(function (response) { return response.json(); })
                 .then(function (data) {
-                _this.translation = data[0].la;
-                console.log("after done", data[0].la);
+                if (_this.langToTranslate === 'english') {
+                    _this.translation = data[0].word;
+                }
+                else {
+                    _this.translation = data[0].la;
+                }
             });
         };
         ;
+        Koyla.prototype.changeLanguage = function () {
+            this.lang = this.lang === "english" ? "mela" : "english";
+            this.langToTranslate = this.langToTranslate === "mela" ? "english" : "mela";
+        };
         return Koyla;
     }());
     exports.Koyla = Koyla;
@@ -178,10 +187,10 @@ define('resources/attributes/on-enter',["require", "exports", "aurelia-framework
     exports.OnEnter = OnEnter;
 });
 
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><require from=\"navig-bar/navig-bar\"></require><navig-bar router.bind=\"router\"></navig-bar><div class=\"container-fluid\"><router-view></router-view></div></template>"; });
-define('text!koyla/koyla.html', ['module'], function(module) { module.exports = "<template><require from=\"resources/attributes/on-enter\"></require><div id=\"koyla_page\" class=\"row text-center\"><input type=\"submit\" value=\"Change language\" id=\"changeLanguageBtn\" class=\"button btn btn-primary\"><form><header id=\"languageTranslatedFromHeader\" class=\"formHeader\">English</header><input type=\"text\" id=\"wordToTranslate\" value.bind=\"word\" on-enter.call=\"submitWord()\"><br></form><input type=\"submit\" value=\"Submit\" id=\"submitBtn\" class=\"btn btn-success\" click.delegate=\"submitWord()\"><header id=\"languageTranslatedToHeader\" class=\"formHeader\">Mela</header><div id=\"translation\" class=\"translationDiv\">${translation}</div></div></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"./styles.css\"></require><require from=\"navig-bar/navig-bar\"></require><navig-bar router.bind=\"router\"></navig-bar><div class=\"container\"><router-view></router-view></div></template>"; });
+define('text!koyla/koyla.html', ['module'], function(module) { module.exports = "<template><require from=\"resources/attributes/on-enter\"></require><require from=\"./koyla.css\"></require><div id=\"koyla_page\" class=\"row text-center col-xs-offset-4 col-xs-4\"><button type=\"submit\" id=\"changeLanguageBtn\" class=\"btn btn-primary\" click.delegate=\"changeLanguage()\">Change language</button><form><div class=\"form-group\"><label id=\"languageTranslatedFromHeader\" class=\"formHeader\" for=\"wordToTranslate\">${lang}</label><input on-enter.call=\"submitWord()\" type=\"text\" placeholder=\"Type any word to translate\" id=\"wordToTranslate\" class=\"form-control wordToTranslate\" value.bind=\"word\"><br></div><button type=\"submit\" id=\"submitBtn\" class=\"btn btn-success\" click.delegate=\"submitWord()\">Submit</button></form><div class=\"row\"><label id=\"languageTranslatedToHeader\" class=\"formHeader\">${langToTranslate}</label><div id=\"translation\" class=\"translationDiv well well-lg\">${translation}</div></div></div></template>"; });
 define('text!styles.css', ['module'], function(module) { module.exports = "body {\n  padding-top: 65px; }\n\nh1 {\n  margin-top: 50%;\n  text-align: center; }\n"; });
-define('text!koyla/koyla.css', ['module'], function(module) { module.exports = ""; });
+define('text!koyla/koyla.css', ['module'], function(module) { module.exports = ".formHeader {\n  margin-top: 24px;\n  color: tan;\n  font-size: 24px; }\n  .formHeader:first-letter {\n    text-transform: capitalize; }\n\n.translationDiv {\n  color: chocolate;\n  font-size: 26px; }\n"; });
 define('text!latay/latay.html', ['module'], function(module) { module.exports = "<template><h1>${message}</h1></template>"; });
 define('text!navig-bar/navig-bar.html', ['module'], function(module) { module.exports = "<template><nav class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\"><div class=\"navbar-header\"><button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\"><span class=\"sr-only\">Toggle Navigation</span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span> <span class=\"icon-bar\"></span></button> <a class=\"navbar-brand\" href=\"#\"><i class=\"fa fa-home\"></i> <span>${router.title}</span></a></div><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\"><a data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1.in\" href.bind=\"row.href\">${row.title}</a></li></ul><ul class=\"nav navbar-nav navbar-right\"><li class=\"loader\" if.bind=\"router.isNavigating\"><i class=\"fa fa-spinner fa-spin fa-2x\"></i></li></ul></div></nav></template>"; });
 //# sourceMappingURL=app-bundle.js.map
