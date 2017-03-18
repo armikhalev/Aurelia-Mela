@@ -7,6 +7,6 @@ The point of this project was to compare the outcome in size and time spent on a
 
 Outcome:
   - non-frameworky project not minified needed to run the app files are 145.5 kB. Time spent about 20 hours.
-  - Aurelia project not minified needed to run the app files are 1.4 kB. Time spent about 8 hours not including configuration and learning of the basics.
+  - Aurelia project needed to run the app files are 701Kb Minified by the cli in production mode. Time spent about 8 hours not including configuration and learning of the basics.
   
   Notice that Aurelia project is reusing some of the styles and approaches from the non-frameworky project.
